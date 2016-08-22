@@ -5,6 +5,6 @@ package com.yanyuanquan.android.library;
  * Email guider@yeah.net
  * github https://github.com/guider
  */
-public class RecyclerView  {
+public class EzRecyclerView {
 
 }
