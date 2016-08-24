@@ -1,4 +1,4 @@
-package com.yanyuanquan.android.library.adapter;
+package com.yanyuanquan.android.library.adapter.inter;
 
 import java.util.List;
 
@@ -37,4 +37,5 @@ public interface DataHelp<T> {
 
     T getData(int position);
 
+    boolean hasLoadingFooter();
 }

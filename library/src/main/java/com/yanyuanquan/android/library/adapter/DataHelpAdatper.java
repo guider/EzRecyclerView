@@ -2,7 +2,11 @@ package com.yanyuanquan.android.library.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ViewGroup;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+
+import com.yanyuanquan.android.library.adapter.inter.DataHelp;
+import com.yanyuanquan.android.library.adapter.inter.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,21 +16,22 @@ import java.util.List;
  * Email guider@yeah.net
  * github https://github.com/guider
  */
-public abstract class EzBaseAdatper<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements DataHelp<T> {
+public abstract class DataHelpAdatper<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements DataHelp<T> {
 
     private List<T> mDatas;
     private int layoutId;
 
-    public EzBaseAdatper(List<T> mDatas, int layoutId) {
+    public DataHelpAdatper(List<T> mDatas, int layoutId) {
         this.mDatas = mDatas;
         this.layoutId = layoutId;
+
     }
 
-    public EzBaseAdatper(List<T> mDatas) {
+    public DataHelpAdatper(List<T> mDatas) {
         this.mDatas = mDatas;
     }
 
-    public EzBaseAdatper(int layoutId) {
+    public DataHelpAdatper(int layoutId) {
         this.layoutId = layoutId;
     }
 
@@ -137,4 +142,11 @@ public abstract class EzBaseAdatper<T, VH extends RecyclerView.ViewHolder> exten
     public T getData(int position) {
         return mDatas.get(position);
     }
+
+    @Override
+    public boolean hasLoadingFooter() {
+        return false;
+    }
+
+
 }

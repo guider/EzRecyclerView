@@ -3,21 +3,21 @@ package com.yanyuanquan.android.library.adapter;
 import java.util.List;
 
 /**
- * Created by guider on 16/8/23.
+ * Created by guider on 16/8/24.
  * Email guider@yeah.net
  * github https://github.com/guider
  */
-public abstract class EzAdpter extends EzBaseAdatper {
+public class EzAdapter extends EzBaseAdpter {
 
-    public EzAdpter(List mDatas, int layoutId) {
+    public EzAdapter(List mDatas, int layoutId) {
         super(mDatas, layoutId);
     }
 
-    public EzAdpter(List mDatas) {
+    public EzAdapter(List mDatas) {
         super(mDatas);
     }
 
-    public EzAdpter(int layoutId) {
+    public EzAdapter(int layoutId) {
         super(layoutId);
     }
 }
