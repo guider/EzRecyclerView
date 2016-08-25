@@ -6,14 +6,17 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import static com.yanyuanquan.android.library.adapter.EzBaseAdpter.Type.*;
+
 /**
  * Created by guider on 16/8/23.
  * Email guider@yeah.net
  * github https://github.com/guider
  */
-public abstract class EzBaseAdpter extends DataHelpAdatper {
+public abstract class EzBaseAdpter<T,VH extends RecyclerView.ViewHolder> extends DataHelpAdatper<T,VH> {
 
 
+    public enum Type {CONTENT, HEADER, FOOTER, LOADING, EMPTY}
 
     public EzBaseAdpter(List mDatas, int layoutId) {
         super(mDatas, layoutId);
@@ -28,13 +31,21 @@ public abstract class EzBaseAdpter extends DataHelpAdatper {
     }
 
 
-
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        switch (viewType){
+    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        if (viewType == HEADER.ordinal()) {
+
+        } else if (viewType == FOOTER.ordinal()) {
+
+        } else if (viewType == LOADING.ordinal()) {
+
+        } else if (viewType == EMPTY.ordinal()) {
+
+        } else {
+            //CONTENT.ordinal();
 
         }
-
 
         return null;
     }
@@ -52,7 +63,7 @@ public abstract class EzBaseAdpter extends DataHelpAdatper {
 
     @Override
     public int getItemCount() {
-        if (hasLoadingFooter()){
+        if (hasLoadingFooter()) {
 
         }
 

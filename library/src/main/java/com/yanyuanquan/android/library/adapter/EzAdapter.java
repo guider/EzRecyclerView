@@ -1,5 +1,7 @@
 package com.yanyuanquan.android.library.adapter;
 
+import android.support.v7.widget.RecyclerView;
+
 import java.util.List;
 
 /**
@@ -7,8 +9,7 @@ import java.util.List;
  * Email guider@yeah.net
  * github https://github.com/guider
  */
-public class EzAdapter extends EzBaseAdpter {
-
+public abstract class EzAdapter<T,VH extends RecyclerView.ViewHolder> extends EzBaseAdpter<T,VH> {
     public EzAdapter(List mDatas, int layoutId) {
         super(mDatas, layoutId);
     }
@@ -20,4 +21,5 @@ public class EzAdapter extends EzBaseAdpter {
     public EzAdapter(int layoutId) {
         super(layoutId);
     }
+
 }
