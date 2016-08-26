@@ -21,6 +21,8 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
     public enum Type {UNNKONW, CONTENT, HEADER, FOOTER, LOADINGFOOTER, LOADING, EMPTY}
 
+    public enum  Status{}
+
     public ViewHelpAdpter(List mDatas, int layoutId) {
         super(mDatas, layoutId);
     }
@@ -86,14 +88,18 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
     @Override
     public int getItemCount() {
-        int size = 0;
-        if (mDatas ==null||mDatas.size() ==0){
-
+        int count = 0;
+        if (mDatas == null || mDatas.size() == 0) {
+            count = mDatas.size();
         }
-        size = size + (hasFooter() ? 1 : 0) + (hasLoadingFooter() ? 1 : 0) + (hasHeader() ? 1 : 0);
+        if (count > 0) {
+            count = count + (hasFooter() ? 1 : 0) + (hasLoadingView() ? 1 : 0) + (hasHeader() ? 1 : 0);
+        } else {
+            count += (hasHeader() ? 1 : 0);
+            count += (hasLoadingView() && loadingViewBelowHeader()) ? 1 : 0;
+        }
 
-
-        return 0;
+        return count;
     }
 
     @Override

@@ -37,8 +37,15 @@ public interface DataHelp<T> {
 
     T getData(int position);
 
-    boolean hasLoadingFooter();
+    boolean hasLoadingView();
 
     boolean hasFooter();
+
     boolean hasHeader();
+
+    boolean loadingViewBelowHeader();
+
+    boolean hasEmptyView();
+
+    boolean emptyViewBelowHeader();
 }
