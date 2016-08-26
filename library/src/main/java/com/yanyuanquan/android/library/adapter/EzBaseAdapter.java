@@ -9,19 +9,19 @@ import java.util.List;
  * Email guider@yeah.net
  * github https://github.com/guider
  */
-public abstract class ViewHelpAdapter<T,VH extends RecyclerView.ViewHolder> extends DataHelpAdatper<T,VH>{
+public abstract class EzBaseAdapter<T> extends DataHelpAdatper<T>{
 
 
 
-    public ViewHelpAdapter(List<T> mDatas, int layoutId) {
+    public EzBaseAdapter(List<T> mDatas, int layoutId) {
         super(mDatas, layoutId);
     }
 
-    public ViewHelpAdapter(List<T> mDatas) {
+    public EzBaseAdapter(List<T> mDatas) {
         super(mDatas);
     }
 
-    public ViewHelpAdapter(int layoutId) {
+    public EzBaseAdapter(int layoutId) {
         super(layoutId);
     }
 

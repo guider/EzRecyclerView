@@ -5,8 +5,8 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import com.yanyuanquan.android.library.adapter.holder.EzHolder;
 import com.yanyuanquan.android.library.adapter.inter.DataHelp;
-import com.yanyuanquan.android.library.adapter.inter.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +16,10 @@ import java.util.List;
  * Email guider@yeah.net
  * github https://github.com/guider
  */
-public abstract class DataHelpAdatper<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> implements DataHelp<T> {
+public abstract class DataHelpAdatper<T> extends RecyclerView.Adapter<EzHolder> implements DataHelp<T> {
 
-    private List<T> mDatas;
-    private int layoutId;
+    public List<T> mDatas;
+    public int layoutId;
 
     public DataHelpAdatper(List<T> mDatas, int layoutId) {
         this.mDatas = mDatas;

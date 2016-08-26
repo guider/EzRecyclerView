@@ -38,4 +38,7 @@ public interface DataHelp<T> {
     T getData(int position);
 
     boolean hasLoadingFooter();
+
+    boolean hasFooter();
+    boolean hasHeader();
 }
