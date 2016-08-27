@@ -4,9 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.yanyuanquan.android.library.adapter.holder.EzHolder;
 import com.yanyuanquan.android.library.adapter.inter.DataHelp;
+import com.yanyuanquan.android.library.adapter.inter.OnItemClickListener;
+import com.yanyuanquan.android.library.adapter.inter.OnItemLongClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,9 +175,34 @@ public abstract class DataHelpAdatper<T> extends RecyclerView.Adapter<EzHolder> 
     }
 
     // -----  Cliclk ------
-    protected void bindListener(EzHolder holder) {
+    private OnItemLongClickListener onItemLongClickListener;
+    private OnItemClickListener onItemClickListener;
 
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
+        this.onItemLongClickListener = onItemLongClickListener;
     }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
+    protected void bindListener(final EzHolder holder) {
+        if (onItemClickListener != null) {
+            holder.getItemView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onItemClickListener(v, holder.getLayoutPosition() - (hasHeader() ? 1 : 0));
+                }
+            });
+        }
+        if (onItemLongClickListener != null) {
+            holder.getItemView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemLongClickListener.onItemClickListener(v, holder.getLayoutPosition() - (hasFooter() ? 1 : 0));
+                }
+            });
+        }
+
+    }
 }

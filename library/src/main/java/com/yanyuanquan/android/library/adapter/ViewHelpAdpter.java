@@ -1,10 +1,16 @@
 package com.yanyuanquan.android.library.adapter;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.yanyuanquan.android.library.R;
 import com.yanyuanquan.android.library.adapter.holder.EzHolder;
 
 import java.util.ArrayList;
@@ -24,7 +30,7 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
     public enum Status {STATUS_LOADING, STATUS_ERROR, STATUS_EMPTY, STATUS_OTHER}
 
-    public enum LFStatus {STATUS_LOAD_NOMORE, STATUS_LOAD_ERROR, STATUS_LOAD_MORE}
+    public enum LFStatus {LFSTATUS_LOAD_NOMORE, LFSTATUS_LOAD_ERROR, LFSTATUS_LOADING_MORE, LFSTATUS_OTHER}
 
     public ViewHelpAdpter(List mDatas, int layoutId) {
         super(mDatas, layoutId);
@@ -38,7 +44,7 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
         super(layoutId);
     }
 
-
+    public LFStatus lfStatus = LFStatus.LFSTATUS_LOADING_MORE;
     public Status currentStatus = Status.STATUS_LOADING;
 
     public Status getCurrentStatus() {
@@ -72,30 +78,31 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
     }
 
 
-
     protected EzHolder createDefaultHolder(ViewGroup parent, int viewType) {
         return new EzHolder(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
     }
 
     @Override
     public void onBindViewHolder(EzHolder holder, int position) {
-        int viewType = getItemViewType(position);
+        int viewType = holder.getItemViewType();
         if (viewType == Type.HEADER.ordinal()) {
 
         } else if (viewType == Type.FOOTER.ordinal()) {
-        } else if (viewType == Type.LOADINGFOOTER.ordinal()) {
 
+        } else if (viewType == Type.LOADINGFOOTER.ordinal()) {
+            convertFooter(holder);
         } else if (viewType == Type.LOADING.ordinal()) {
 
         } else if (viewType == Type.EMPTY.ordinal()) {
 
         } else if (viewType == Type.ERROR.ordinal()) {
 
-
         } else {
-
+            convert(holder, mDatas.get(holder.getLayoutPosition() - (hasHeader() ? 1 : 0)));
         }
     }
+
+    public abstract void convert(EzHolder holder, T t);
 
     @Override
     public int getItemViewType(int position) {
@@ -151,6 +158,58 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
                     ? 1 : 0) : ((hasEmptyView() && emptyViewBelowHeader()) ? 1 : 0);
         }
         return count;
+    }
+
+    protected void convertFooter(EzHolder holder) {
+        View progressBar = holder.getItemView().findViewById(R.id.view_hlep_adapter_progressbar);
+        View textView = holder.getItemView().findViewById(R.id.view_hlep_adapter_textview);
+        if (textView != null && textView instanceof TextView) {
+            if (lfStatus == LFStatus.LFSTATUS_LOAD_ERROR) {
+                holder.getItemView().setVisibility(View.VISIBLE);
+                ((TextView) textView).setText(isNetworkAvailable(holder.getItemView().getContext()) ? "加载出错了" : "没有可用的网络");
+                textView.setVisibility(View.VISIBLE);
+                if (progressBar != null)
+                    progressBar.setVisibility(View.VISIBLE);
+
+            } else if (lfStatus == LFStatus.LFSTATUS_LOAD_NOMORE) {
+                holder.getItemView().setVisibility(View.VISIBLE);
+                ((TextView) textView).setText("没有更多了");
+                textView.setVisibility(View.VISIBLE);
+                if (progressBar != null)
+                    progressBar.setVisibility(View.VISIBLE);
+            } else if (lfStatus == LFStatus.LFSTATUS_LOADING_MORE) {
+                holder.getItemView().setVisibility(View.VISIBLE);
+                ((TextView) textView).setText("加载中...");
+                textView.setVisibility(View.VISIBLE);
+                if (progressBar != null)
+                    progressBar.setVisibility(View.VISIBLE);
+            } else {
+                holder.getItemView().setVisibility(View.GONE);
+                textView.setVisibility(View.GONE);
+                if (progressBar != null)
+                    progressBar.setVisibility(View.GONE);
+            }
+        }
+
+
+    }
+
+    /**
+     * 判断当前网络是否可用
+     *
+     * @param context
+     * @return 当前网络是否可用
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo info = connectivity.getActiveNetworkInfo();
+        if (info == null || !info.isConnected()) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

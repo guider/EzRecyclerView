@@ -41,7 +41,7 @@ public class EzHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
-    public View getConvertView() {
+    public View getItemView() {
         return itemView;
     }
 
