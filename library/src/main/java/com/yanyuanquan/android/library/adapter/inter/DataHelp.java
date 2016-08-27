@@ -54,4 +54,6 @@ public interface DataHelp<T> {
     boolean hasErrorView();
 
     boolean errorViewBelowHeader();
+
+    int getLoadingFooterType();
 }

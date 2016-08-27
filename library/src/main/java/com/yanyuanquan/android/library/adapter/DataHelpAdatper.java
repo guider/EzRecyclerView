@@ -165,4 +165,9 @@ public abstract class DataHelpAdatper<T> extends RecyclerView.Adapter<EzHolder> 
     public boolean errorViewBelowHeader() {
         return false;
     }
+
+    @Override
+    public int getLoadingFooterType() {
+        return 0;
+    }
 }

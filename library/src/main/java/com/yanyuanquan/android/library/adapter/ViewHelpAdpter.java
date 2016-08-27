@@ -19,7 +19,7 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
     public View headerView, footerView, loadingFooterView, emptyView, loadingView;
 
-    public enum Type {UNNKONW, CONTENT, HEADER, FOOTER, LOADINGFOOTER, LOADING, EMPTY, ERROR}
+    public enum Type {CONTENT, HEADER, FOOTER, LOADINGFOOTER, LOADING, EMPTY, ERROR}
 
     public enum Status {STATUS_LOADING, STATUS_ERROR, STATUS_EMPTY, STATUS_OTHER}
 
@@ -51,11 +51,10 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
     @Override
     public EzHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         EzHolder holder = null;
-        if (viewType == Type.CONTENT.ordinal()) {
-
-        } else if (viewType == Type.HEADER.ordinal()) {
+        if (viewType == Type.HEADER.ordinal()) {
 
         } else if (viewType == Type.FOOTER.ordinal()) {
+        } else if (viewType == Type.LOADINGFOOTER.ordinal()) {
 
         } else if (viewType == Type.LOADING.ordinal()) {
 
@@ -63,10 +62,9 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
         } else if (viewType == Type.ERROR.ordinal()) {
 
-        } else if (viewType == Type.LOADINGFOOTER.ordinal()) {
+
         } else {
-            //UNKNOW.ordinal();
-            throw new IllegalArgumentException(" unknow viewType  >> " + viewType);
+
         }
 
         return holder;
@@ -75,11 +73,10 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
     @Override
     public void onBindViewHolder(EzHolder holder, int position) {
         int viewType = getItemViewType(position);
-        if (viewType == Type.CONTENT.ordinal()) {
-
-        } else if (viewType == Type.HEADER.ordinal()) {
+        if (viewType == Type.HEADER.ordinal()) {
 
         } else if (viewType == Type.FOOTER.ordinal()) {
+        } else if (viewType == Type.LOADINGFOOTER.ordinal()) {
 
         } else if (viewType == Type.LOADING.ordinal()) {
 
@@ -87,44 +84,47 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
         } else if (viewType == Type.ERROR.ordinal()) {
 
-        } else if (viewType == Type.LOADINGFOOTER.ordinal()) {
 
         } else {
-            //UNKNOW.ordinal();
-            throw new IllegalArgumentException(" unknow viewType  >> " + viewType);
 
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (currentStatus == Status.STATUS_LOADING) {
-            if (position == 0 && hasHeader() && loadingViewBelowHeader()) {
+        if (position == 0 || position == 1) {
+            if (currentStatus == Status.STATUS_LOADING) {
+                if (position == 0 && hasHeader() && loadingViewBelowHeader()) {
+                    return Type.HEADER.ordinal();
+                } else {
+                    return Type.LOADING.ordinal();
+                }
+            } else if (currentStatus == Status.STATUS_EMPTY) {
+                if (position == 0 && hasHeader() && emptyViewBelowHeader()) {
+                    return Type.HEADER.ordinal();
+                } else {
+                    return Type.EMPTY.ordinal();
+                }
+            } else if (currentStatus == Status.STATUS_ERROR) {
+                if (position == 0 && hasHeader() && hasErrorView() && errorViewBelowHeader()) {
+                    return Type.HEADER.ordinal();
+                } else {
+                    return Type.ERROR.ordinal();
+                }
+            } else if (position == 0 && hasHeader()) {
                 return Type.HEADER.ordinal();
-            } else {
-                return Type.LOADING.ordinal();
             }
-        } else if (currentStatus == Status.STATUS_EMPTY) {
-            if (position == 0 && hasHeader() && emptyViewBelowHeader()) {
-                return Type.HEADER.ordinal();
-            } else {
-                return Type.EMPTY.ordinal();
+        } else if (position <= getItemCount() - 2) {
+            if (hasFooter() && hasLoadingFooter()) {
+                return position == getItemCount() - 1 ? Type.FOOTER.ordinal() : Type.LOADINGFOOTER.ordinal();
+            } else if (hasFooter() || hasLoadingFooter()) {
+                return (position == getItemCount() && (hasFooter()) ? Type.FOOTER.ordinal() : Type.LOADINGFOOTER.ordinal());
             }
-        } else if (currentStatus == Status.STATUS_ERROR) {
-            if (position == 0 && hasHeader() &&hasErrorView()&& errorViewBelowHeader()) {
-                return Type.HEADER.ordinal();
-            } else {
-                return Type.ERROR.ordinal();
-            }
-        } else {
-            if (position == 0 &&hasHeader() ){
-                return Type.HEADER.ordinal();
-            }
-
-
         }
+        return getMultItemViewType(position);
+    }
 
-
+    public int getMultItemViewType(int position) {
         return super.getItemViewType(position);
     }
 
