@@ -143,8 +143,9 @@ public abstract class DataHelpAdatper<T> extends RecyclerView.Adapter<EzHolder> 
         return mDatas.get(position);
     }
 
+
     @Override
-    public boolean hasLoadingView() {
+    public boolean hasLoadingFooter() {
         return false;
     }
 
@@ -153,13 +154,15 @@ public abstract class DataHelpAdatper<T> extends RecyclerView.Adapter<EzHolder> 
         return false;
     }
 
-    @Override
-    public boolean hasEmptyView() {
-        return false;
-    }
 
     @Override
     public boolean emptyViewBelowHeader() {
+        return false;
+    }
+
+
+    @Override
+    public boolean errorViewBelowHeader() {
         return false;
     }
 }

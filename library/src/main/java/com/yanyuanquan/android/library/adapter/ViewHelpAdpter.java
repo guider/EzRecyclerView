@@ -17,11 +17,13 @@ import java.util.List;
  */
 public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
-    public View headerView, footerView, loadingFooterView;
+    public View headerView, footerView, loadingFooterView, emptyView, loadingView;
 
-    public enum Type {UNNKONW, CONTENT, HEADER, FOOTER, LOADINGFOOTER, LOADING, EMPTY}
+    public enum Type {UNNKONW, CONTENT, HEADER, FOOTER, LOADINGFOOTER, LOADING, EMPTY, ERROR}
 
-    public enum  Status{}
+    public enum Status {STATUS_LOADING, STATUS_ERROR, STATUS_EMPTY, STATUS_OTHER}
+
+    public enum LFStatus {STATUS_LOAD_NOMORE, STATUS_LOAD_ERROR, STATUS_LOAD_MORE}
 
     public ViewHelpAdpter(List mDatas, int layoutId) {
         super(mDatas, layoutId);
@@ -36,6 +38,16 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
     }
 
 
+    public Status currentStatus = Status.STATUS_LOADING;
+
+    public Status getCurrentStatus() {
+        return currentStatus;
+    }
+
+    public void setCurrentStatus(Status currentStatus) {
+        this.currentStatus = currentStatus;
+    }
+
     @Override
     public EzHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         EzHolder holder = null;
@@ -48,6 +60,8 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
         } else if (viewType == Type.LOADING.ordinal()) {
 
         } else if (viewType == Type.EMPTY.ordinal()) {
+
+        } else if (viewType == Type.ERROR.ordinal()) {
 
         } else if (viewType == Type.LOADINGFOOTER.ordinal()) {
         } else {
@@ -71,6 +85,8 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
         } else if (viewType == Type.EMPTY.ordinal()) {
 
+        } else if (viewType == Type.ERROR.ordinal()) {
+
         } else if (viewType == Type.LOADINGFOOTER.ordinal()) {
 
         } else {
@@ -82,6 +98,33 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
     @Override
     public int getItemViewType(int position) {
+        if (currentStatus == Status.STATUS_LOADING) {
+            if (position == 0 && hasHeader() && loadingViewBelowHeader()) {
+                return Type.HEADER.ordinal();
+            } else {
+                return Type.LOADING.ordinal();
+            }
+        } else if (currentStatus == Status.STATUS_EMPTY) {
+            if (position == 0 && hasHeader() && emptyViewBelowHeader()) {
+                return Type.HEADER.ordinal();
+            } else {
+                return Type.EMPTY.ordinal();
+            }
+        } else if (currentStatus == Status.STATUS_ERROR) {
+            if (position == 0 && hasHeader() &&hasErrorView()&& errorViewBelowHeader()) {
+                return Type.HEADER.ordinal();
+            } else {
+                return Type.ERROR.ordinal();
+            }
+        } else {
+            if (position == 0 &&hasHeader() ){
+                return Type.HEADER.ordinal();
+            }
+
+
+        }
+
+
         return super.getItemViewType(position);
     }
 
@@ -93,12 +136,13 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
             count = mDatas.size();
         }
         if (count > 0) {
-            count = count + (hasFooter() ? 1 : 0) + (hasLoadingView() ? 1 : 0) + (hasHeader() ? 1 : 0);
+            count = count + (hasFooter() ? 1 : 0) + (hasLoadingFooter() ? 1 : 0);
         } else {
             count += (hasHeader() ? 1 : 0);
-            count += (hasLoadingView() && loadingViewBelowHeader()) ? 1 : 0;
+            // according to currentStatus get ItemCount
+            count += (Status.STATUS_LOADING == currentStatus) ? ((hasLoadingView() && loadingViewBelowHeader())
+                    ? 1 : 0) : ((hasEmptyView() && emptyViewBelowHeader()) ? 1 : 0);
         }
-
         return count;
     }
 
@@ -112,4 +156,18 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
         return headerView != null;
     }
 
+    @Override
+    public boolean hasLoadingFooter() {
+        return loadingFooterView != null;
+    }
+
+    @Override
+    public boolean hasEmptyView() {
+        return emptyView != null;
+    }
+
+    @Override
+    public boolean hasLoadingView() {
+        return loadingView != null;
+    }
 }
