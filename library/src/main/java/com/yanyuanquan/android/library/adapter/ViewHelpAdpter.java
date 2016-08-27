@@ -1,6 +1,7 @@
 package com.yanyuanquan.android.library.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
 
-    public View headerView, footerView, loadingFooterView, emptyView, loadingView;
+    public View headerView, footerView, loadingFooterView, emptyView, loadingView, errorView;
 
     public enum Type {CONTENT, HEADER, FOOTER, LOADINGFOOTER, LOADING, EMPTY, ERROR}
 
@@ -52,22 +53,28 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
     public EzHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         EzHolder holder = null;
         if (viewType == Type.HEADER.ordinal()) {
-
+            holder = new EzHolder(headerView);
         } else if (viewType == Type.FOOTER.ordinal()) {
+            holder = new EzHolder(footerView);
         } else if (viewType == Type.LOADINGFOOTER.ordinal()) {
-
+            holder = new EzHolder(loadingFooterView);
         } else if (viewType == Type.LOADING.ordinal()) {
-
+            holder = new EzHolder(loadingView);
         } else if (viewType == Type.EMPTY.ordinal()) {
-
+            holder = new EzHolder(emptyView);
         } else if (viewType == Type.ERROR.ordinal()) {
-
-
+            holder = new EzHolder(errorView);
         } else {
-
+            holder = createDefaultHolder(parent, viewType);
+            bindListener(holder);
         }
-
         return holder;
+    }
+
+
+
+    protected EzHolder createDefaultHolder(ViewGroup parent, int viewType) {
+        return new EzHolder(LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false));
     }
 
     @Override
@@ -169,5 +176,10 @@ public abstract class ViewHelpAdpter<T> extends DataHelpAdatper<T> {
     @Override
     public boolean hasLoadingView() {
         return loadingView != null;
+    }
+
+    @Override
+    public boolean hasErrorView() {
+        return errorView != null;
     }
 }

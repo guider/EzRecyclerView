@@ -1,6 +1,5 @@
 package com.yanyuanquan.android.library.adapter.inter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
@@ -8,7 +7,7 @@ import android.view.View;
  * Email guider@yeah.net
  * github https://github.com/guider
  */
-public interface OnItemClickListener {
+public interface OnItemLongClickListener {
 
-    void onItemClickListener(View view,int position);
+    void onItemClickListener(View view, int position);
 }
