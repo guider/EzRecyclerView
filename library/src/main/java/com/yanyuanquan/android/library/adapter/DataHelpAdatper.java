@@ -174,35 +174,5 @@ public abstract class DataHelpAdatper<T> extends RecyclerView.Adapter<EzHolder> 
         return 0;
     }
 
-    // -----  Cliclk ------
-    private OnItemLongClickListener onItemLongClickListener;
-    private OnItemClickListener onItemClickListener;
 
-    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
-        this.onItemLongClickListener = onItemLongClickListener;
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    protected void bindListener(final EzHolder holder) {
-        if (onItemClickListener != null) {
-            holder.getItemView().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClickListener.onItemClickListener(v, holder.getLayoutPosition() - (hasHeader() ? 1 : 0));
-                }
-            });
-        }
-        if (onItemLongClickListener != null) {
-            holder.getItemView().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemLongClickListener.onItemClickListener(v, holder.getLayoutPosition() - (hasFooter() ? 1 : 0));
-                }
-            });
-        }
-
-    }
 }

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.yanyuanquan.android.library.adapter.ViewHelpAdpter;
+import com.yanyuanquan.android.library.adapter.EzBaseAdapter;
 
 /**
  * Created by guider on 16/8/22.
@@ -69,11 +69,11 @@ public class EzRecyclerView extends RecyclerView {
             }
 
             public void refreshData() {
-                if (adapter instanceof ViewHelpAdpter) {
-                    if (((ViewHelpAdpter) adapter).getDatas() == null || ((ViewHelpAdpter) adapter).getDatas().size() == 0) {
-                        ((ViewHelpAdpter) adapter).setCurrentStatus(ViewHelpAdpter.Status.STATUS_EMPTY);
+                if (adapter instanceof EzBaseAdapter) {
+                    if (((EzBaseAdapter) adapter).getDatas() == null || ((EzBaseAdapter) adapter).getDatas().size() == 0) {
+                        ((EzBaseAdapter) adapter).setCurrentStatus(EzBaseAdapter.Status.STATUS_EMPTY);
                     }else {
-                        ((ViewHelpAdpter) adapter).setCurrentStatus(ViewHelpAdpter.Status.STATUS_OTHER);
+                        ((EzBaseAdapter) adapter).setCurrentStatus(EzBaseAdapter.Status.STATUS_OTHER);
                     }
                 }
             }

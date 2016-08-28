@@ -1,5 +1,7 @@
 package com.yanyuanquan.android.library.adapter;
 
+import android.view.View;
+
 import java.util.List;
 
 /**
@@ -7,7 +9,7 @@ import java.util.List;
  * Email guider@yeah.net
  * github https://github.com/guider
  */
-public abstract class EzAdapter<T> extends ViewHelpAdpter<T> {
+public abstract class EzAdapter<T> extends EzBaseAdapter<T> {
     public EzAdapter(List mDatas, int layoutId) {
         super(mDatas, layoutId);
     }
@@ -20,4 +22,10 @@ public abstract class EzAdapter<T> extends ViewHelpAdpter<T> {
         super(layoutId);
     }
 
+    public void setLoadingView(View loadingView) {
+        this.loadingView = loadingView;
+    }
+    public void setLoadingView(int  loadingViewId) {
+        this.loadingView = loadingView;
+    }
 }
