@@ -1,5 +1,6 @@
 package com.yanyuanquan.android.library.adapter;
 
+import android.util.Log;
 import android.view.View;
 
 import java.util.List;
@@ -25,7 +26,15 @@ public abstract class EzAdapter<T> extends EzBaseAdapter<T> {
     public void setLoadingView(View loadingView) {
         this.loadingView = loadingView;
     }
-    public void setLoadingView(int  loadingViewId) {
-        this.loadingView = loadingView;
+
+    public void setErrorView(View errorView) {
+        this.errorView = errorView;
+    }
+
+    public void addHeader(View view) {
+        this.headerView =view;
+       if (view.getHeight() ==0){
+           Log.e("zjw","height  -- >>   "+ view.getHeight());
+       }
     }
 }

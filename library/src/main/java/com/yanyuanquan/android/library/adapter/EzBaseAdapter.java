@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,11 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
 
     public enum LFStatus {LFSTATUS_LOAD_NOMORE, LFSTATUS_LOAD_ERROR, LFSTATUS_LOADING_MORE, LFSTATUS_OTHER}
 
-    public EzBaseAdapter(List mDatas, int layoutId) {
+    public EzBaseAdapter(List<T> mDatas, int layoutId) {
         super(mDatas, layoutId);
     }
 
-    public EzBaseAdapter(List mDatas) {
+    public EzBaseAdapter(List<T> mDatas) {
         super(mDatas);
     }
 
@@ -85,6 +86,7 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
     @Override
     public void onBindViewHolder(EzHolder holder, int position) {
         int viewType = holder.getItemViewType();
+        Log.e("zjw", "viewtype  --->>>  " + viewType + "   status   " + currentStatus + "   postion  " + position);
         if (viewType == Type.HEADER.ordinal()) {
 
         } else if (viewType == Type.FOOTER.ordinal()) {
@@ -108,8 +110,10 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
     public int getItemViewType(int position) {
         if (position == 0 || position == 1) {
             if (currentStatus == Status.STATUS_LOADING) {
-                if (position == 0 && hasLoadingView()) {
-                    return (hasHeader() && loadingViewBelowHeader()) ? Type.HEADER.ordinal() : Type.LOADING.ordinal();
+                if (position == 0) {
+                    return hasHeader() ? Type.HEADER.ordinal() : Type.LOADING.ordinal();
+                } else if (position == 1 && hasHeader() && hasLoadingView() && loadingViewBelowHeader()) {
+                    return Type.LOADING.ordinal();
                 }
             } else if (currentStatus == Status.STATUS_EMPTY) {
                 if (position == 0 && hasHeader() && emptyViewBelowHeader()) {
@@ -145,6 +149,13 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
     public int getItemCount() {
         if (currentStatus == Status.STATUS_LOADING) {
             return (hasHeader() && loadingViewBelowHeader()) ? 2 : 1;
+        }
+
+        if (currentStatus == Status.STATUS_EMPTY) {
+            return (hasHeader() && emptyViewBelowHeader()) ? 2 : 1;
+        }
+        if (currentStatus == Status.STATUS_ERROR) {
+            return (hasHeader() && errorViewBelowHeader()) ? 2 : 1;
         }
         int count = 0;
         if (mDatas != null) {

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.yanyuanquan.android.library.adapter.EzAdapter;
 import com.yanyuanquan.android.library.adapter.EzBaseAdapter;
@@ -34,20 +35,52 @@ public class MainActivity extends AppCompatActivity {
             public void convert(EzHolder holder, String s) {
                 holder.setText(android.R.id.text1, s);
             }
-        });
 
+            @Override
+            public boolean loadingViewBelowHeader() {
+                return true;
+            }
+
+            @Override
+            public boolean emptyViewBelowHeader() {
+                return true;
+            }
+
+            @Override
+            public boolean errorViewBelowHeader() {
+                return true;
+            }
+        });
+        adapter.addHeader(LayoutInflater.from(this).inflate(R.layout.headerview,recyclerview,false));
         adapter.setLoadingView(LayoutInflater.from(this).inflate(R.layout.loadingveiw, recyclerview, false));
-        getData();
+        View errorView;
+        adapter.setErrorView(errorView = LayoutInflater.from(this).inflate(R.layout.errorview, recyclerview, false));
+        getData(false);
+        errorView.findViewById(R.id.retry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData(true);
+                adapter.setCurrentStatus(EzBaseAdapter.Status.STATUS_LOADING);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     Handler handler = new Handler();
 
-    private List getData() {
+    private List getData(final boolean b) {
         handler.postDelayed(new TimerTask() {
             @Override
             public void run() {
-                for (int i = 0; i < 20; i++) {
-                    arr.add("  guider  >>> " + i);
+
+                if (!b) {
+                    adapter.setCurrentStatus(EzBaseAdapter.Status.STATUS_ERROR);
+                    adapter.notifyDataSetChanged();
+                } else {
+
+                    for (int i = 0; i < 20; i++) {
+                        arr.add("  guider  >>> " + i);
+                    }
                     adapter.setCurrentStatus(EzBaseAdapter.Status.STATUS_OTHER);
                     adapter.notifyDataSetChanged();
                 }
