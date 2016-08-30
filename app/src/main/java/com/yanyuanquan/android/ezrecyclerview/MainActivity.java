@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        adapter.addHeader(LayoutInflater.from(this).inflate(R.layout.headerview,recyclerview,false));
+//        adapter.addHeader(LayoutInflater.from(this).inflate(R.layout.headerview,recyclerview,false));
         adapter.setLoadingView(LayoutInflater.from(this).inflate(R.layout.loadingveiw, recyclerview, false));
         View errorView;
         adapter.setErrorView(errorView = LayoutInflater.from(this).inflate(R.layout.errorview, recyclerview, false));
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     for (int i = 0; i < 20; i++) {
                         arr.add("  guider  >>> " + i);
                     }
-                    adapter.setCurrentStatus(EzBaseAdapter.Status.STATUS_OTHER);
+                    adapter.setCurrentStatus(EzBaseAdapter.Status.STATUS_CONTENT);
                     adapter.notifyDataSetChanged();
                 }
             }

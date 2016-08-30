@@ -29,7 +29,7 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
 
     public enum Type {CONTENT, HEADER, FOOTER, LOADINGFOOTER, LOADING, EMPTY, ERROR}
 
-    public enum Status {STATUS_LOADING, STATUS_ERROR, STATUS_EMPTY, STATUS_OTHER}
+    public enum Status {STATUS_LOADING, STATUS_ERROR, STATUS_EMPTY, STATUS_CONTENT}
 
     public enum LFStatus {LFSTATUS_LOAD_NOMORE, LFSTATUS_LOAD_ERROR, LFSTATUS_LOADING_MORE, LFSTATUS_OTHER}
 
@@ -86,7 +86,6 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
     @Override
     public void onBindViewHolder(EzHolder holder, int position) {
         int viewType = holder.getItemViewType();
-        Log.e("zjw", "viewtype  --->>>  " + viewType + "   status   " + currentStatus + "   postion  " + position);
         if (viewType == Type.HEADER.ordinal()) {
 
         } else if (viewType == Type.FOOTER.ordinal()) {

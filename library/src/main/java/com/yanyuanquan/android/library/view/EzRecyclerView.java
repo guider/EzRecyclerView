@@ -73,7 +73,7 @@ public class EzRecyclerView extends RecyclerView {
                     if (((EzBaseAdapter) adapter).getDatas() == null || ((EzBaseAdapter) adapter).getDatas().size() == 0) {
                         ((EzBaseAdapter) adapter).setCurrentStatus(EzBaseAdapter.Status.STATUS_EMPTY);
                     }else {
-                        ((EzBaseAdapter) adapter).setCurrentStatus(EzBaseAdapter.Status.STATUS_OTHER);
+                        ((EzBaseAdapter) adapter).setCurrentStatus(EzBaseAdapter.Status.STATUS_CONTENT);
                     }
                 }
             }
