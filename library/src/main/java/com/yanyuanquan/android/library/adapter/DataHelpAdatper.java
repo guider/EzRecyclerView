@@ -43,6 +43,9 @@ public abstract class DataHelpAdatper<T> extends RecyclerView.Adapter<EzHolder> 
         this.layoutId = layoutId;
     }
 
+    public DataHelpAdatper() {
+    }
+
     @Override
     public void setData(List<T> mDatas) {
         this.mDatas = mDatas;

@@ -45,6 +45,9 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
         super(layoutId);
     }
 
+    public EzBaseAdapter() {
+    }
+
     public LFStatus lfStatus = LFStatus.LFSTATUS_LOADING_MORE;
     public Status currentStatus = Status.STATUS_LOADING;
 
@@ -107,6 +110,7 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
 
     @Override
     public int getItemViewType(int position) {
+        Log.e("zjw","  postion  >>> " + position + "   status  " + currentStatus );
         if (position == 0 || position == 1) {
             if (currentStatus == Status.STATUS_LOADING) {
                 if (position == 0) {
@@ -140,6 +144,7 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
     }
 
     public int getMultItemViewType(int position) {
+        Log.e("zjw",super.getItemViewType(position)+"  view Type  ");
         return super.getItemViewType(position);
     }
 
@@ -161,13 +166,9 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
             count = mDatas.size();
         }
         if (count > 0) {
-            count = count + (hasFooter() ? 1 : 0) + (hasLoadingFooter() ? 1 : 0);
-        } else {
-            count += (hasHeader() ? 1 : 0);
-            // according to currentStatus get ItemCount
-            count += (Status.STATUS_LOADING == currentStatus) ? ((hasLoadingView() && loadingViewBelowHeader())
-                    ? 1 : 0) : ((hasEmptyView() && emptyViewBelowHeader()) ? 1 : 0);
+            count = count + (hasFooter() ? 1 : 0) + (hasLoadingFooter() ? 1 : 0) + (hasHeader() ? 1 : 0);
         }
+        Log.e("zjw" ,"  count  >>>   "+count);
         return count;
     }
 

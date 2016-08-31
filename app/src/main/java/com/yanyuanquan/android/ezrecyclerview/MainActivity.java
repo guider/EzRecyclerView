@@ -1,5 +1,6 @@
 package com.yanyuanquan.android.ezrecyclerview;
 
+import android.content.Entity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.view.View;
 
 import com.yanyuanquan.android.library.adapter.EzAdapter;
 import com.yanyuanquan.android.library.adapter.EzBaseAdapter;
+import com.yanyuanquan.android.library.adapter.EzMultAdapter;
+import com.yanyuanquan.android.library.adapter.anno.ItemType;
 import com.yanyuanquan.android.library.adapter.holder.EzHolder;
 
 import java.util.ArrayList;
@@ -21,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     RecyclerView recyclerview;
-    private EzAdapter<String> adapter;
-    List<String> arr = new ArrayList<>();
+    private EzMultAdapter<Entity> adapter;
+    List<Entity> arr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +33,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.setAdapter(adapter = new EzAdapter<String>(arr, android.R.layout.simple_list_item_2) {
+        recyclerview.setAdapter(adapter = new EzMultAdapter<Entity>(arr) {
             @Override
-            public void convert(EzHolder holder, String s) {
-                holder.setText(android.R.id.text1, s);
+            public void convert(EzHolder holder, Entity s) {
+                holder.setText(android.R.id.text1,s.name);
             }
 
             @Override
             public boolean loadingViewBelowHeader() {
-                return true;
+                return false;
             }
 
             @Override
@@ -51,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-//        adapter.addHeader(LayoutInflater.from(this).inflate(R.layout.headerview,recyclerview,false));
+        adapter.addItemType(0,android.R.layout.simple_list_item_1);
+        adapter.addItemType(1,android.R.layout.simple_list_item_checked);
+        adapter.addHeaderView(LayoutInflater.from(this).inflate(R.layout.headerview, recyclerview, false));
         adapter.setLoadingView(LayoutInflater.from(this).inflate(R.layout.loadingveiw, recyclerview, false));
         View errorView;
         adapter.setErrorView(errorView = LayoutInflater.from(this).inflate(R.layout.errorview, recyclerview, false));
@@ -69,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     Handler handler = new Handler();
 
     private List getData(final boolean b) {
-        handler.postDelayed(new TimerTask() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
@@ -79,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
 
                     for (int i = 0; i < 20; i++) {
-                        arr.add("  guider  >>> " + i);
+                        arr.add(new Entity(i%2,"   guider >>>  "+i));
                     }
                     adapter.setCurrentStatus(EzBaseAdapter.Status.STATUS_CONTENT);
                     adapter.notifyDataSetChanged();
@@ -88,5 +93,15 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
 
         return arr;
+    }
+    public class Entity{
+        public Entity(int item, String name) {
+            this.item = item;
+            this.name = name;
+        }
+
+        @ItemType
+        int item;
+        String name ;
     }
 }

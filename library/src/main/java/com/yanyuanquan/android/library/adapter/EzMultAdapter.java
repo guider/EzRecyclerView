@@ -1,5 +1,6 @@
 package com.yanyuanquan.android.library.adapter;
 
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,6 +8,8 @@ import android.view.ViewGroup;
 import com.yanyuanquan.android.library.adapter.anno.ItemType;
 import com.yanyuanquan.android.library.adapter.holder.EzHolder;
 
+import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,9 @@ public abstract class EzMultAdapter<T> extends EzAdapter<T> {
         super(layoutId);
     }
 
+    public EzMultAdapter() {
+    }
+
     private SparseArray<Integer> layouts = new SparseArray<>();
 
     public void addItemType(int type, int layoutId) {
@@ -39,18 +45,20 @@ public abstract class EzMultAdapter<T> extends EzAdapter<T> {
     @Override
     public int getMultItemViewType(int position) {
         T t = mDatas.get(position);
-        Method[] ms = t.getClass().getDeclaredMethods();
-        int itemType = 0;
-        for (Method method : ms) {
-            ItemType it = method.getAnnotation(ItemType.class);
-            if (it != null) {
-                Class clz = t.getClass();
-
-                return itemType;
+        Class clz = t.getClass();
+        Field[] fs = clz.getDeclaredFields();
+        for (Field field : fs) {
+            ItemType anno = field.getAnnotation(ItemType.class);
+            if (anno != null) {
+                field.setAccessible(true);
+                try {
+                   return (int) field.get(t);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
         }
-
-
+        Log.e("EzMultAdapter","没有找到带有ItemType 注解的字段");
         return super.getMultItemViewType(position);
     }
 

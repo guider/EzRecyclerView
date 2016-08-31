@@ -27,7 +27,9 @@ public abstract class EzAdapter<T> extends EzBaseAdapter<T> {
     public EzAdapter(int layoutId) {
         super(layoutId);
     }
-
+    public EzAdapter() {
+        super();
+    }
     public void setLoadingView(View loadingView) {
         this.loadingView = loadingView;
 //        ViewGroup.LayoutParams lp = loadingView.getLayoutParams();

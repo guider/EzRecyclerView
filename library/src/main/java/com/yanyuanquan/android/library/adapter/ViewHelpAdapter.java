@@ -33,6 +33,8 @@ public abstract class ViewHelpAdapter<T> extends DataHelpAdatper<T>{
         super(layoutId);
     }
 
+    public ViewHelpAdapter() {
+    }
 
     /**
      * 判断当前网络是否可用
