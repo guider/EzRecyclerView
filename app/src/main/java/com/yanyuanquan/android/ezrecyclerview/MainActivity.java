@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -54,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        adapter.addItemType(0,android.R.layout.simple_list_item_1);
-        adapter.addItemType(1,android.R.layout.simple_list_item_checked);
-        adapter.addHeaderView(LayoutInflater.from(this).inflate(R.layout.headerview, recyclerview, false));
+        adapter.addItemType(10,android.R.layout.simple_list_item_1);
+        adapter.addItemType(11,android.R.layout.simple_list_item_checked);
+//        adapter.addHeaderView(LayoutInflater.from(this).inflate(R.layout.headerview, recyclerview, false));
         adapter.setLoadingView(LayoutInflater.from(this).inflate(R.layout.loadingveiw, recyclerview, false));
         View errorView;
         adapter.setErrorView(errorView = LayoutInflater.from(this).inflate(R.layout.errorview, recyclerview, false));
@@ -84,10 +85,11 @@ public class MainActivity extends AppCompatActivity {
                 } else {
 
                     for (int i = 0; i < 20; i++) {
-                        arr.add(new Entity(i%2,"   guider >>>  "+i));
+                        arr.add(new Entity(i%2+10,"   guider >>>  "+i));
                     }
                     adapter.setCurrentStatus(EzBaseAdapter.Status.STATUS_CONTENT);
                     adapter.notifyDataSetChanged();
+                    Log.e("zjw",arr.toString());
                 }
             }
         }, 2000);
@@ -103,5 +105,13 @@ public class MainActivity extends AppCompatActivity {
         @ItemType
         int item;
         String name ;
+
+        @Override
+        public String toString() {
+            return "Entity{" +
+                    "item=" + item +
+                    ", name='" + name + '\'' +
+                    '}';
+        }
     }
 }

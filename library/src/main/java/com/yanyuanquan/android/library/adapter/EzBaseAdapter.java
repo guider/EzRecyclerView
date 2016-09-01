@@ -29,7 +29,7 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
 
     public enum Type {CONTENT, HEADER, FOOTER, LOADINGFOOTER, LOADING, EMPTY, ERROR}
 
-    public enum Status {STATUS_LOADING, STATUS_ERROR, STATUS_EMPTY, STATUS_CONTENT}
+    public enum Status { STATUS_CONTENT,STATUS_LOADING, STATUS_ERROR, STATUS_EMPTY}
 
     public enum LFStatus {LFSTATUS_LOAD_NOMORE, LFSTATUS_LOAD_ERROR, LFSTATUS_LOADING_MORE, LFSTATUS_OTHER}
 
@@ -61,7 +61,7 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
 
     @Override
     public EzHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        EzHolder holder = null;
+        EzHolder holder;
         if (viewType == Type.HEADER.ordinal()) {
             holder = new EzHolder(headerView);
         } else if (viewType == Type.FOOTER.ordinal()) {
@@ -110,7 +110,6 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("zjw","  postion  >>> " + position + "   status  " + currentStatus );
         if (position == 0 || position == 1) {
             if (currentStatus == Status.STATUS_LOADING) {
                 if (position == 0) {
@@ -144,7 +143,6 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
     }
 
     public int getMultItemViewType(int position) {
-        Log.e("zjw",super.getItemViewType(position)+"  view Type  ");
         return super.getItemViewType(position);
     }
 
@@ -168,7 +166,6 @@ public abstract class EzBaseAdapter<T> extends ViewHelpAdapter<T> {
         if (count > 0) {
             count = count + (hasFooter() ? 1 : 0) + (hasLoadingFooter() ? 1 : 0) + (hasHeader() ? 1 : 0);
         }
-        Log.e("zjw" ,"  count  >>>   "+count);
         return count;
     }
 
